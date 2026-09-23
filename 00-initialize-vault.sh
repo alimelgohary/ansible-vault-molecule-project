@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -euo pipefail
 # Create config directories
 mkdir -p ./vault/config ./vault/data ./vault/logs
 chown 100 -R vault/   # Set owner to the vault user inside the container
