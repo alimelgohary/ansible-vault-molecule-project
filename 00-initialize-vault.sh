@@ -2,7 +2,7 @@
 
 # Create config directories
 mkdir -p ./vault/config ./vault/data ./vault/logs
-chwon 100 -R vault/   # Set owner to the vault user inside the container
+chown 100 -R vault/   # Set owner to the vault user inside the container
 cat > ./vault/config/vault.hcl <<EOF
 disable_mlock = true
 ui = true
