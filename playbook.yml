@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - role: postgresql
+      vars:
+        appuser_password: "123456"
+        reportuser_password: "123456789"

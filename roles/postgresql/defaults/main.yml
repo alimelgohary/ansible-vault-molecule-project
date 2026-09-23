@@ -1,0 +1,45 @@
+#SPDX-License-Identifier: MIT-0
+---
+postgresql_version: "16"
+postgresql_port: 5432
+postgresql_data_dir: "/var/lib/postgresql/{{ postgresql_version }}/main"
+postgresql_conf_dir: "/etc/postgresql/{{ postgresql_version }}/main"
+postgresql_bin_dir: "/usr/lib/postgresql/{{ postgresql_version }}/bin"
+
+postgresql_service_enabled: true
+postgresql_service_state: started
+
+postgresql_hba_entries:
+  - { type: local, database: all, user: postgres, auth_method: peer }
+  - { type: local, database: all, user: all, auth_method: peer }
+  - { type: host, database: all, user: all, address: "127.0.0.1/32", auth_method: scram-sha-256 }
+  - { type: host, database: all, user: all, address: "::1/128", auth_method: scram-sha-256 }
+  - { type: host, database: all, user: all, address: "0.0.0.0/0", auth_method: scram-sha-256 }
+
+postgresql_conf_settings:
+  listen_addresses: "'*'"
+  max_connections: "200"
+  shared_buffers: "{{ (ansible_memtotal_mb | float) * 0.25 }}"
+  timezone: "UTC"
+  log_timezone: "UTC"
+  wal_level: replica
+
+postgresql_databases:
+  - name: appdb
+  - name: reportdb
+
+postgresql_users:
+  - name: appuser
+    password: "{{ appuser_password }}"
+
+  - name: reportuser
+    password: "{{ reportuser_password }}"
+
+
+postgresql_user_privileges:
+  - user: appuser
+    db: appdb
+    privs: ALL
+  - user: reportuser
+    db: reportdb
+    privs: ALL

@@ -1,0 +1,49 @@
+---
+- name: Manage databases
+  block:
+    - name: Create PostgreSQL databases
+      community.postgresql.postgresql_db:
+        name: "{{ item.name }}"
+        owner: "{{ item.owner | default('postgres') }}"
+        encoding: "{{ item.encoding | default('UTF8') }}"
+        lc_collate: "{{ item.lc_collate | default('en_US.UTF-8') }}"
+        lc_ctype: "{{ item.lc_ctype | default('en_US.UTF-8') }}"
+        template: "{{ item.template | default('template0') }}"
+        state: present
+      loop: "{{ postgresql_databases }}"
+      become_user: postgres
+  rescue:
+    - name: Log database creation failure
+      ansible.builtin.debug:
+        msg: "Failed to create database: {{ ansible_failed_result.msg }}"
+
+- name: Manage users
+  block:
+    - name: Create PostgreSQL users
+      community.postgresql.postgresql_user:
+        name: "{{ item.name }}"
+        password: "{{ item.password }}"
+        role_attr_flags: "{{ item.role_attr_flags | default('NOSUPERUSER') }}"
+        state: present
+      loop: "{{ postgresql_users }}"
+      become_user: postgres
+  rescue:
+    - name: Log user creation failure
+      ansible.builtin.debug:
+        msg: "Failed to create user: {{ ansible_failed_result.msg }}"
+
+- name: Manage privileges
+  block:
+    - name: Grant database privileges to users
+      community.postgresql.postgresql_privs:
+        database: "{{ item.db }}"
+        roles: "{{ item.user }}"
+        privs: "{{ item.privs | default('ALL') }}"
+        type: database
+        state: present
+      loop: "{{ postgresql_user_privileges | default([]) }}"
+      become_user: postgres
+  rescue:
+    - name: Log privilege grant failure
+      ansible.builtin.debug:
+        msg: "Failed to grant privileges: {{ ansible_failed_result.msg }}"

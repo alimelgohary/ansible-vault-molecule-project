@@ -1,0 +1,24 @@
+---
+- name: Import repository setup tasks
+  ansible.builtin.import_tasks: repo.yml
+  become: true
+  tags:
+    - install
+
+- name: Import install tasks
+  ansible.builtin.import_tasks: install.yml
+  become: true
+  tags:
+    - install
+
+- name: Import configuration tasks
+  ansible.builtin.import_tasks: configure.yml
+  become: true
+  tags:
+    - configure
+
+- name: Import user/database tasks
+  ansible.builtin.import_tasks: users_databases.yml
+  become: true
+  tags:
+    - users

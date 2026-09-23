@@ -1,0 +1,14 @@
+---
+argument_specs:
+  main:
+    short_description: "Main entry point for role."
+    options:
+      appuser_password:
+        type: str
+        required: true
+        description: "The appuser_password of the DB."
+
+      reportuser_password:
+        type: str
+        required: true
+        description: "The reportuser_password of the DB."
