@@ -66,8 +66,8 @@ echo ""
 echo "==> Done. Fetching RoleID and SecretID..."
 echo ""
  
-ROLE_ID=$(vault_exec read -field=role_id auth/approle/role/$ROLE_NAME/role-id)
-SECRET_ID=$(vault_exec write -f -field=secret_id auth/approle/role/$ROLE_NAME/secret-id)
+export ROLE_ID=$(vault_exec read -field=role_id auth/approle/role/$ROLE_NAME/role-id)
+export SECRET_ID=$(vault_exec write -f -field=secret_id auth/approle/role/$ROLE_NAME/secret-id)
  
 echo "  ROLE_ID:    $ROLE_ID"
 echo "  SECRET_ID:  $SECRET_ID"
