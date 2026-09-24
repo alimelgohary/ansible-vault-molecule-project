@@ -8,8 +8,8 @@
         path: "postgres"           # path under the KV mount
         mount_point: "secret"          # KV mount name (default: secret)
         auth_method: approle
-        role_id: "{{ lookup('env', 'VAULT_ROLE_ID') }}"
-        secret_id: "{{ lookup('env', 'VAULT_SECRET_ID') }}"
+        role_id: "{{ lookup('env', 'ROLE_ID') }}"
+        secret_id: "{{ lookup('env', 'SECRET_ID') }}"
       register: vault_secret
       delegate_to: localhost
 
