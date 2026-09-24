@@ -5,7 +5,7 @@ set -euo pipefail
 
 # Install dependencies and create an inventory sample host in a container
 sudo apt update && \
-sudo apt install -y ansible docker.io && \
+sudo apt install -y ansible python3-hvac docker.io && \
 sudo systemctl start docker && \
 sudo docker run -d \
   --name pg_test \
@@ -17,6 +17,9 @@ sudo docker run -d \
 # Clone the repo
 git clone https://github.com/alimelgohary/ansible-vault-molecule-project
 cd ansible-vault-molecule-project
+
+# Install needed ansible collections
+ansible-galaxy collection install -r requirements.yml
 
 # Set auto pull (You won't need it, it's for me for testing)
 while true

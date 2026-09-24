@@ -1,8 +1,19 @@
 ---
 - hosts: all
   become: true
+  tasks:
+    - name: Fetch secret from Vault KV v2
+      community.hashi_vault.vault_kv2_get:
+        url: "http://localhost:8200"
+        path: "data/postgres"           # path under the KV mount
+        mount_point: "secret"          # KV mount name (default: secret)
+        auth_method: approle
+        role_id: "{{ lookup('env', 'VAULT_ROLE_ID') }}"
+        secret_id: "{{ lookup('env', 'VAULT_SECRET_ID') }}"
+      register: vault_secret
+
   roles:
     - role: postgresql
       vars:
-        appuser_password: "123456"
-        reportuser_password: "123456789"
+        appuser_password: "{{ vault_secret.secret.appuser_password }}"
+        reportuser_password: "{{ vault_secret.secret.reportuser_password }}"
