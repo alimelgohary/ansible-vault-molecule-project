@@ -2,21 +2,35 @@
 set -euo pipefail
  
 # ─── Args ─────────────────────────────────────────────────────────────────────
-read -rsp "Vault token: " VAULT_TOKEN
+read -rp "Vault token: " VAULT_TOKEN
 echo ""
  
 if [[ -z "$VAULT_TOKEN" ]]; then
   echo "Error: VAULT_TOKEN is required." >&2
   exit 1
 fi
- 
+
+read -rp "Choose Your Secrets: APPUSER_PASSWORD: " APPUSER_PASSWORD
+echo ""
+
+if [[ -z "$APPUSER_PASSWORD" ]]; then
+  echo "Error: APPUSER_PASSWORD is required." >&2
+  exit 1
+fi
+
+read -rp "Choose Your Secrets: REPORTUSER_PASSWORD: " REPORTUSER_PASSWORD
+echo ""
+
+if [[ -z "$REPORTUSER_PASSWORD" ]]; then
+  echo "Error: REPORTUSER_PASSWORD is required." >&2
+  exit 1
+fi
+
 # ─── Config ───────────────────────────────────────────────────────────────────
 VAULT_CONTAINER="vault"
 POLICY_NAME="ansible-postgres"
 ROLE_NAME="ansible-provisioner"
 SECRET_PATH="secret/data/postgres"
-APPUSER_PASSWORD="APPUSER123456"
-REPORTUSER_PASSWORD="REPORTUSER123"
  
 # ─── Helper ───────────────────────────────────────────────────────────────────
 vault_exec() {
