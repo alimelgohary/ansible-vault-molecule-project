@@ -18,13 +18,21 @@ sudo docker run -d \
 git clone https://github.com/alimelgohary/ansible-vault-molecule-project
 cd ansible-vault-molecule-project
 
-# Install needed ansible collections
-ansible-galaxy collection install -r requirements.yml
-
 # Set auto pull (You won't need it, it's for me for testing)
 while true
 do 
   git pull origin master > /dev/null 2>&1
   sleep 5
 done &
+
+# Install needed ansible collections
+ansible-galaxy collection install -r requirements.yml
+
+# Initialize and Unseal
+./00-initialize-vault.sh
+
+# Execute and get RoleID, SecretID in env 
+source 01-setup-vault.sh 
+
+ansible-playbook -i inventory.ini playbook.yml 
 ```
