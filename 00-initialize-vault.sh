@@ -37,4 +37,4 @@ docker exec -i \
   -e VAULT_FORMAT=json \
   vault vault operator init > unseal-keys.txt
 
-./01-unseal-vault.sh
+./99-unseal-vault.sh
