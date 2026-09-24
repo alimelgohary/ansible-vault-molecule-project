@@ -15,8 +15,6 @@ VAULT_CONTAINER="vault"
 POLICY_NAME="ansible-postgres"
 ROLE_NAME="ansible-provisioner"
 SECRET_PATH="secret/data/postgres"
-DB_PASSWORD="changeme123"
-REPLICATION_PASSWORD="replication456"
 APPUSER_PASSWORD="APPUSER123456"
 REPORTUSER_PASSWORD="REPORTUSER123"
  
@@ -33,8 +31,6 @@ vault_exec secrets enable -path=secret kv-v2 2>/dev/null || echo "    Already en
  
 echo "==> [2/5] Writing secret to $SECRET_PATH"
 vault_exec kv put secret/postgres \
-  db_password="$DB_PASSWORD" \
-  replication_password="$REPLICATION_PASSWORD" \
   appuser_password="$APPUSER_PASSWORD" \
   reportuser_password="$REPORTUSER_PASSWORD"
  
