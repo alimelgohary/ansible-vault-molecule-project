@@ -6,4 +6,4 @@
     appuser_password: secret
     reportuser_password: secret
   roles:
-    - role: postgresql16
+    - role: postgresql
