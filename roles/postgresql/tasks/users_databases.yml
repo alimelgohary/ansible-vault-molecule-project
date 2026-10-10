@@ -36,7 +36,7 @@
   block:
     - name: Grant database privileges to users
       community.postgresql.postgresql_privs:
-        database: "{{ item.db }}"
+        login_db: "{{ item.db }}"
         roles: "{{ item.user }}"
         privs: "{{ item.privs | default('ALL') }}"
         type: database
