@@ -19,7 +19,7 @@ postgresql_hba_entries:
 postgresql_conf_settings:
   listen_addresses: "'*'"
   max_connections: "200"
-  shared_buffers: "{{ (ansible_memtotal_mb | float) * 0.25 }}"
+  shared_buffers: "{{ (ansible_facts['memtotal_mb'] | float) * 0.25 }}"
   timezone: "UTC"
   log_timezone: "UTC"
   wal_level: replica
