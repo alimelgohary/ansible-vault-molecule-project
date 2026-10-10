@@ -27,6 +27,10 @@ pip install ansible molecule molecule-plugins[docker] hvac
 # Install needed ansible collections inside the venv
 ansible-galaxy collection install -r requirements.yml
 
+# End to End molecule test and exit if failed
+molecule test || exit 1
+
+
 # ========= Test on Inventory =========
 
 # Create an inventory sample host in a container
