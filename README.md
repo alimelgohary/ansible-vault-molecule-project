@@ -25,7 +25,7 @@ ansible-galaxy collection install -r requirements.yml
 # Create a venv for molecule packages
 python3 -m venv molecule-env
 source molecule-env/bin/activate
-pip install molecule molecule-docker
+pip install molecule molecule-plugins[docker]
 
 # Deactive the venv
 deactivate
