@@ -4,7 +4,6 @@
     name:
       - ca-certificates
       - curl
-      - gnupg
       - python3-psycopg2
     state: present
     update_cache: true
@@ -23,11 +22,17 @@
     force: false
 
 - name: Add PostgreSQL apt repository
-  ansible.builtin.apt_repository:
-    repo: >-
-      deb [signed-by=/usr/share/keyrings/postgresql.asc]
-      https://apt.postgresql.org/pub/repos/apt
-      {{ ansible_distribution_release }}-pgdg main
-    filename: pgdg
+  ansible.builtin.deb822_repository:
+    name: pgdg
+    types: deb
+    uris: https://apt.postgresql.org/pub/repos/apt
+    suites: "{{ ansible_distribution_release }}-pgdg"
+    components: main
+    signed_by: /usr/share/keyrings/postgresql.asc
     state: present
+  register: pgdg_repo
+
+- name: Update apt cache
+  ansible.builtin.apt:
     update_cache: true
+  when: pgdg_repo.changed
