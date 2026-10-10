@@ -16,7 +16,7 @@
 
     - name: Check appuser can connect to appdb
       community.postgresql.postgresql_ping:
-        db: appdb
+        login_db: appdb
         login_host: 127.0.0.1
         login_user: appuser
         login_password: secret
@@ -24,7 +24,7 @@
 
     - name: Check reportuser can connect to reportdb
       community.postgresql.postgresql_ping:
-        db: reportdb
+        login_db: reportdb
         login_host: 127.0.0.1
         login_user: reportuser
         login_password: secret
