@@ -12,7 +12,7 @@ sudo docker run -d \
   --privileged \
   --cgroupns=host \
   -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
-  geerlingguy/docker-ubuntu2204-ansible
+  geerlingguy/docker-ubuntu2204-ansible@sha256:7c37bfb098b8f52d18ee730a65f946a2535acab19b6f491418c2ed788d51974a
 
 # Clone the repo
 git clone https://github.com/alimelgohary/ansible-vault-molecule-project
