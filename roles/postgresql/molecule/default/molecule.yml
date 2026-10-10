@@ -1,58 +1,39 @@
 ---
-# Dependency management (download roles/collections)
 dependency:
   name: galaxy
   options:
-    ignore-certs: false
-    ignore-errors: false
-    role-file: requirements.yml
     requirements-file: requirements.yml
 
+driver:
+  name: docker
 
-ansible:
-  cfg:
-    defaults:
-      host_key_checking: false
-      verbosity: 1
-    ssh_connection:
-      pipelining: true
-  env:
-    ANSIBLE_FORCE_COLOR: "1"
-    ANSIBLE_LOAD_CALLBACK_PLUGINS: "1"
+platforms:
+  - name: pg_test
+    image: geerlingguy/docker-ubuntu2204-ansible
+    pre_build_image: true
+    privileged: true
+    cgroupns_mode: host
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    command: /lib/systemd/systemd
 
-  executor:
-    backend: ansible-playbook
-    args:
-      ansible_playbook:
-        - --diff
-        - --force-handlers
-        - --inventory=/path/to/inventory.yml
-      ansible_navigator:
-        - --mode stdout
-        - --pull-policy missing
-        - --execution-environment-image ghcr.io/ansible/community-ansible-dev-tools:latest
+provisioner:
+  name: ansible
+  inventory:
+    host_vars:
+      pg_test:
+        ansible_user: root
 
-  playbooks:
-    create: create.yml
-    converge: converge.yml
-    destroy: destroy.yml
-    cleanup: cleanup.yml
-    prepare: prepare.yml
-    side_effect: side_effect.yml
-    verify: verify.yml
+verifier:
+  name: ansible
 
 scenario:
-  name: default
   test_sequence:
     - dependency
-    - cleanup
     - destroy
     - syntax
     - create
-    - prepare
     - converge
     - idempotence
-    - side_effect
     - verify
-    - cleanup
     - destroy
