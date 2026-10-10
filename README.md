@@ -1,4 +1,4 @@
-### This script is to run the project on killerkoda temporary ubuntu environment
+### This script is to run the project on killerkoda temporary  [ubuntu](https://killercoda.com/playgrounds/scenario/ubuntu) environment
 ```
 #!/bin/bash
 set -euo pipefail
