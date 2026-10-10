@@ -2,6 +2,7 @@
 - name: Install prerequisite packages
   ansible.builtin.apt:
     name:
+      - python3-debian
       - ca-certificates
       - curl
       - python3-psycopg2
@@ -26,7 +27,7 @@
     name: pgdg
     types: deb
     uris: https://apt.postgresql.org/pub/repos/apt
-    suites: "{{ ansible_distribution_release }}-pgdg"
+    suites: "{{ ansible_facts['distribution_release'] }}-pgdg"
     components: main
     signed_by: /usr/share/keyrings/postgresql.asc
     state: present
