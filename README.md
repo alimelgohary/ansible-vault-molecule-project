@@ -28,8 +28,9 @@ pip install ansible molecule molecule-plugins[docker] hvac
 ansible-galaxy collection install -r requirements.yml
 
 # End to End molecule test and exit if failed
+cd roles/postgresql/
 molecule test || exit 1
-
+cd ../..
 
 # ========= Test on Inventory =========
 
