@@ -10,3 +10,7 @@
     name: postgresql
     state: reloaded
   become: true
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true

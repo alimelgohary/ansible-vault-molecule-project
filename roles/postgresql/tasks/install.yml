@@ -17,7 +17,7 @@
 
 - name: Check if ufw is installed
   ansible.builtin.command: which ufw
-  register: ufw_check
+  register: postgresql_ufw_check
   changed_when: false
   failed_when: false
 
@@ -26,4 +26,4 @@
     rule: allow
     port: "{{ postgresql_port }}"
     proto: tcp
-  when: ufw_check.rc == 0
+  when: postgresql_ufw_check.rc == 0

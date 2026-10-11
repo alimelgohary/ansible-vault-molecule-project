@@ -31,9 +31,4 @@
     components: main
     signed_by: /usr/share/keyrings/postgresql.asc
     state: present
-  register: pgdg_repo
-
-- name: Update apt cache
-  ansible.builtin.apt:
-    update_cache: true
-  when: pgdg_repo.changed
+  notify: Update apt cache

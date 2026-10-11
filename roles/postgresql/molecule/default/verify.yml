@@ -6,8 +6,8 @@
     - name: Check PostgreSQL is running
       ansible.builtin.systemd:
         name: postgresql
-      register: pg_service
-      failed_when: pg_service.status.ActiveState != 'active'
+      register: postgresql_service
+      failed_when: postgresql_service.status.ActiveState != 'active'
 
     - name: Check port 5432 is listening
       ansible.builtin.wait_for:
@@ -21,6 +21,7 @@
         login_user: appuser
         login_password: secret
       become_user: postgres
+      become: true
 
     - name: Check reportuser can connect to reportdb
       community.postgresql.postgresql_ping:
@@ -29,3 +30,4 @@
         login_user: reportuser
         login_password: secret
       become_user: postgres
+      become: true

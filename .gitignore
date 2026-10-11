@@ -1,3 +1,4 @@
 unseal-keys.txt
 vault
 molecule-env
+.ansible

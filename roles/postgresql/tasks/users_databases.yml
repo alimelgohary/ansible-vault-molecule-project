@@ -11,6 +11,7 @@
         template: "{{ item.template | default('template0') }}"
         state: present
       loop: "{{ postgresql_databases }}"
+      become: true
       become_user: postgres
   rescue:
     - name: Log database creation failure
@@ -26,6 +27,7 @@
         role_attr_flags: "{{ item.role_attr_flags | default('NOSUPERUSER') }}"
         state: present
       loop: "{{ postgresql_users }}"
+      become: true
       become_user: postgres
       no_log: true
   rescue:
@@ -43,6 +45,7 @@
         type: database
         state: present
       loop: "{{ postgresql_user_privileges | default([]) }}"
+      become: true
       become_user: postgres
   rescue:
     - name: Log privilege grant failure

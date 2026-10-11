@@ -22,7 +22,7 @@ python3 -m venv molecule-env
 source molecule-env/bin/activate
 
 # Install everything inside the venv
-pip install ansible molecule molecule-plugins[docker] hvac
+pip install ansible ansible-lint molecule molecule-plugins[docker] hvac
 
 # Install needed ansible collections inside the venv
 ansible-galaxy collection install -r requirements.yml
