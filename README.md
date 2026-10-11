@@ -48,6 +48,5 @@ sudo docker run -d \
 # Execute and get RoleID, SecretID in env
 source 01-setup-vault.sh
 
-source molecule-env/bin/activate
 ansible-playbook -i inventory.ini playbook.yml 
 ```
