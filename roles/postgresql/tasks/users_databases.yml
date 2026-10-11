@@ -27,6 +27,7 @@
         state: present
       loop: "{{ postgresql_users }}"
       become_user: postgres
+      no_log: true
   rescue:
     - name: Log user creation failure
       ansible.builtin.debug:
