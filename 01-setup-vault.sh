@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 set -euo pipefail
 
@@ -88,4 +87,3 @@ echo "Login test:"
 vault_exec write auth/approle/login \
   role_id="$ROLE_ID" \
   secret_id="$SECRET_ID"
-```
