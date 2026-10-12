@@ -27,6 +27,9 @@ pip install ansible ansible-lint molecule molecule-plugins[docker] hvac
 # Install needed ansible collections inside the venv
 ansible-galaxy collection install -r requirements.yml
 
+# Lint
+ansible-lint roles/postgresql
+
 # End to End molecule test and exit if failed
 cd roles/postgresql/
 molecule test || exit 1
