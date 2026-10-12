@@ -33,7 +33,7 @@ jobs:
           ansible-galaxy collection install -r requirements.yml
 
       - name: Initialize Vault
-        run: sudo bash vault/00-initialize-vault.sh
+        run: sudo bash 00-initialize-vault.sh
 
       - name: Extract root token
         run: |
@@ -42,7 +42,7 @@ jobs:
 
       - name: Setup Vault
         run: |
-          bash vault/01-setup-vault.sh \
+          bash 01-setup-vault.sh \
             "$VAULT_ROOT_TOKEN" \
             "test_appuser_password" \
             "test_reportuser_password"
