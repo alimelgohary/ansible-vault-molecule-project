@@ -42,7 +42,7 @@ jobs:
 
       - name: Export Vault AppRole credentials
         run: |
-          source <(bash vault/01-setup-vault.sh \
+          source <(bash 01-setup-vault.sh \
             "$VAULT_ROOT_TOKEN" \
             "test_appuser_password" \
             "test_reportuser_password")
