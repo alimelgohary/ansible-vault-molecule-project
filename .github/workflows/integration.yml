@@ -1,0 +1,58 @@
+name: Integration
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  smoke:
+    name: Integration smoke test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Start PostgreSQL target container
+        run: |
+          sudo docker run -d \
+            --name pg_test \
+            --privileged \
+            --cgroupns=host \
+            -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
+            geerlingguy/docker-ubuntu2204-ansible@sha256:7c37bfb098b8f52d18ee730a65f946a2535acab19b6f491418c2ed788d51974a
+
+      - name: Set up venv
+        run: python3 -m venv ci-env
+
+      - name: Install dependencies
+        run: |
+          source ci-env/bin/activate
+          pip install ansible molecule molecule-plugins[docker]
+          ansible-galaxy collection install -r requirements.yml
+
+      - name: Initialize Vault
+        run: sudo bash vault/00-initialize-vault.sh
+
+      - name: Extract root token
+        run: |
+          ROOT_TOKEN=$(jq -r '.root_token' unseal-keys.txt)
+          echo "VAULT_ROOT_TOKEN=$ROOT_TOKEN" >> $GITHUB_ENV
+
+      - name: Setup Vault
+        run: |
+          bash vault/01-setup-vault.sh \
+            "$VAULT_ROOT_TOKEN" \
+            "test_appuser_password" \
+            "test_reportuser_password"
+
+      - name: Export Vault AppRole credentials
+        run: |
+          echo "VAULT_ROLE_ID=$ROLE_ID" >> $GITHUB_ENV
+          echo "VAULT_SECRET_ID=$SECRET_ID" >> $GITHUB_ENV
+
+      - name: Run smoke test
+        run: |
+          source ci-env/bin/activate
+          ansible-playbook -i inventory.ini playbook.yml
