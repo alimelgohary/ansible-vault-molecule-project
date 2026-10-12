@@ -2,7 +2,7 @@
 galaxy_info:
   author: ali
   description: This role installs PostgreSQL
-  min_ansible_version: "2.1"
+  min_ansible_version: "2.15"
   license: "MIT"
 
   # If this a Container Enabled role, provide the minimum Ansible Container version.
