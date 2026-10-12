@@ -40,17 +40,14 @@ jobs:
           ROOT_TOKEN=$(jq -r '.root_token' unseal-keys.txt)
           echo "VAULT_ROOT_TOKEN=$ROOT_TOKEN" >> $GITHUB_ENV
 
-      - name: Setup Vault
-        run: |
-          bash 01-setup-vault.sh \
-            "$VAULT_ROOT_TOKEN" \
-            "test_appuser_password" \
-            "test_reportuser_password"
-
       - name: Export Vault AppRole credentials
         run: |
-          echo "VAULT_ROLE_ID=$ROLE_ID" >> $GITHUB_ENV
-          echo "VAULT_SECRET_ID=$SECRET_ID" >> $GITHUB_ENV
+          source <(bash vault/01-setup-vault.sh \
+            "$VAULT_ROOT_TOKEN" \
+            "test_appuser_password" \
+            "test_reportuser_password")
+          echo "ROLE_ID=$ROLE_ID" >> $GITHUB_ENV
+          echo "SECRET_ID=$SECRET_ID" >> $GITHUB_ENV
 
       - name: Run smoke test
         run: |
