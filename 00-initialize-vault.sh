@@ -32,6 +32,12 @@ docker run -d \
   hashicorp/vault@sha256:47f14a6acb98f48d798a07df7c83f23a6e636e1cf724c5f8ff165cb32667a1e2 \
   server > /dev/null
 
+echo "Waiting for Vault to be ready..."
+until [ "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8200/v1/sys/health)" != "000" ]; do
+  sleep 2
+done
+
+
 docker exec -i \
   -e VAULT_ADDR=http://127.0.0.1:8200 \
   -e VAULT_FORMAT=json \
